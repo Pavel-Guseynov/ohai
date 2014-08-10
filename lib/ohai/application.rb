@@ -19,6 +19,26 @@ require 'ohai'
 require 'ohai/log'
 require 'mixlib/cli'
 
+class DateTime
+  def as_json(*)
+    {
+      'json_class' => self.class.name,
+      'y' => year,
+      'm' => month,
+      'd' => day,
+      'H' => hour,
+      'M' => min,
+      'S' => sec,
+      'of' => offset.to_s,
+      'sg' => start,
+    }
+  end
+
+  def to_json(*args)
+    FFI_Yajl::Encoder.encode(as_json, *args)
+  end
+end
+
 class Ohai::Application
   include Mixlib::CLI
 
