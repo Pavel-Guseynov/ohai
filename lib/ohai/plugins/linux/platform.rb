@@ -53,7 +53,13 @@ Ohai.plugin(:Platform) do
         else
           platform "debian"
         end
-        platform_version File.read("/etc/debian_version").chomp
+
+        debian_version = File.read("/etc/debian_version").chomp
+        if debian_version == 'jessie/sid'
+          platform_version '8.0'
+        else
+          platform_version debian_version
+        end
       end
     elsif File.exists?("/etc/parallels-release")
       contents = File.read("/etc/parallels-release").chomp
